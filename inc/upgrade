@@ -34,7 +34,7 @@ function save_mysql_dbs {
             source $dir/stackrc &&
             echo $MYSQL_PASSWORD)
     for db in $DATABASES_TO_SAVE; do
-        mysqldump -uroot -p$mysql_pass $db >$SAVE_DIR/$db.sql.$release
+        mysqldump -ustack -p$mysql_pass $db >$SAVE_DIR/$db.sql.$release
     done
 }
 
