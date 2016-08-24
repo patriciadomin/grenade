@@ -29,6 +29,7 @@ NOVA_PASS=pass
 NOVA_SERVER=nova_server1
 DEFAULT_INSTANCE_TYPE=${DEFAULT_INSTANCE_TYPE:-m1.tiny}
 DEFAULT_IMAGE_NAME=${DEFAULT_IMAGE_NAME:-cirros-0.3.2-x86_64-uec}
+boot_timeout=$BOOT_TIMEOUT
 
 function _nova_set_user {
     OS_TENANT_NAME=$NOVA_PROJECT
@@ -94,7 +95,7 @@ function create {
     openstack ip floating add $ip $NOVA_SERVER
 
     # ping check on the way up to ensure we're really running
-    ping_check_public $ip 30
+    ping_check_public $ip $boot_timeout
 
     # NOTE(sdague): for debugging when things go wrong, so we have a
     # before and an after
@@ -110,7 +111,7 @@ function verify {
 
 function verify_noapi {
     local server_ip=$(resource_get nova nova_server_ip)
-    ping_check_public $server_ip 30
+    ping_check_public $server_ip $boot_timeout
 }
 
 function destroy {
